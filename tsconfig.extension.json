@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src/extension"
+  },
+  "include": [
+    "src/extension/**/*"
+  ],
+  "exclude": [
+    "src/webview/**/*"
+  ]
+} 
