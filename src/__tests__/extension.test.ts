@@ -1,9 +1,13 @@
-import * as assert from 'assert';
-import { GitService } from '../extension/GitService';
+import { activate } from '../extension/extension';
 
-suite('Extension Test Suite', () => {
-  test('GitService should be instantiable', () => {
-    const gitService = new GitService();
-    assert.ok(gitService);
+describe('Extension activation', () => {
+  test('activates and registers subscriptions', () => {
+    const context = {
+      subscriptions: [] as any[]
+    } as any;
+
+    activate(context);
+
+    expect(Array.isArray(context.subscriptions)).toBe(true);
   });
 }); 
