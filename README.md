@@ -1,67 +1,70 @@
 # CommitKit
 
-A VSCode extension that replicates the PyCharm/JetBrains-style commit window.
+CommitKit brings the JetBrains-style commit experience to VS Code. It pairs a rich React webview with a first-class Git integration so you can stage files, review diffs, and craft commits without leaving the editor.
 
-## Features
+## Feature Highlights
 
-- React webview with PyCharm-like commit UI
-- Staged / Unstaged / Untracked sections
-- Per-file Stage / Unstage actions
-- Stage All / Unstage All toolbar
-- Commit message with Amend option
-- Open file from the list
-- Refresh status and success/error feedback
-- VSCode theme integration
+- Three-column change explorer grouping staged, unstaged, and untracked files
+- Inline actions to stage/unstage, discard, or open any file, plus Stage/Unstage All shortcuts
+- Live diff viewer with syntax-coloured hunks for the selected change
+- Commit form with summary/body split, amend, sign-off, and optional commit & push in one click
+- Git status synced with the built-in `vscode.git` extension, including branch/ahead/behind info
+- Theme-aware UI that mirrors the JetBrains commit dialog
 
-## Getting Started
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+
 - npm
-- VSCode 1.85+
+- VS Code 1.85 or newer with the built-in Git extension enabled
 
-### Install dependencies
+### Install & Build
 ```bash
 npm install
-```
-
-### Build
-```bash
 npm run build
 ```
-This compiles the extension code and bundles the webview to `webview-dist/`.
+The build step compiles the extension host into `dist/` and bundles the webview into `webview-dist/`.
 
-### Run & Debug in VSCode
-1. Open this folder in VSCode.
-2. Press F5 to launch an Extension Development Host.
-3. In the Dev Host, open a workspace with a Git repository.
-4. Open Command Palette and run: `CommitKit: Open Commit Modal`.
-5. Or open the SCM view; you’ll see a `CommitKit` view.
+### Launch in VS Code
+1. Open this workspace in VS Code.
+2. Press <kbd>F5</kbd> to start an Extension Development Host.
+3. In the Dev Host, open a folder that is a Git repository.
+4. Run the `CommitKit: Open Commit Modal` command (or use the CommitKit button in the SCM view).
 
-### Test
+### Test & Verify
 ```bash
-npm test
+npm test          # Jest + ts-jest unit tests
+npm run verify    # Full build followed by tests
 ```
-- Unit tests run with Jest and `ts-jest`.
-- The `vscode` API is mocked under `src/__mocks__/vscode.ts`.
+Mocks for the VS Code API live in `src/__mocks__/vscode.ts` so tests can exercise the Git workflow.
 
-## Usage
-1. Open a Git repo in the Dev Host.
-2. Use `CommitKit: Open Commit Modal`.
-3. Stage/Unstage files individually or via Stage All/Unstage All.
-4. Type a commit message, optionally enable Amend, then Commit.
-5. Click filenames to open them in the editor.
+## Project Layout
+
+```
+src/
+├─ extension/     # Extension host (Git service, panel controller)
+├─ webview/       # React UI compiled by Vite
+├─ __tests__/     # Jest suites for extension + services
+└─ __mocks__/     # VS Code API shims used in tests
+```
+Key configs—`tsconfig.extension.json`, `tsconfig.webview.json`, `vite.config.ts`, and `jest.config.js`—sit at the repository root.
 
 ## Packaging
 ```bash
 npm run build
-npm run package
+npm run package   # produces commitkit-*.vsix
 ```
-This creates a `.vsix` you can install via VSCode’s Extensions panel.
+Install the generated `.vsix` via the VS Code Extensions view (`…` ➜ *Install from VSIX*).
 
-## Troubleshooting
-- If Git isn’t detected, ensure the built-in `vscode.git` extension is enabled and you opened a folder with a Git repo.
-- For webview changes, run `npm run watch` during development to hot-rebuild the web assets.
+## Troubleshooting Tips
+
+- **No repositories detected**: ensure the built-in `vscode.git` extension is enabled and the Dev Host opened a folder containing a Git repo.
+- **UI not updating**: use the `Refresh` button in the header or run `CommitKit: Open Commit Modal` again to reload the panel.
+- **Webview tweaks not appearing**: run `npm run watch` to rebuild on change or rerun `npm run build` before launching the Dev Host.
+
+## Contributing
+
+See [`AGENTS.md`](AGENTS.md) for contributor guidelines covering project structure, coding conventions, and pull request expectations.
 
 ## License
 MIT
