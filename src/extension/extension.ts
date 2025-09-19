@@ -1,28 +1,26 @@
 import * as vscode from 'vscode';
-import { CommitKitProvider } from './CommitKitProvider';
+import { CommitKitPanel } from './CommitKitPanel';
+import { GitService } from './GitService';
+
+let gitService: GitService | undefined;
 
 export function activate(context: vscode.ExtensionContext): void {
-  const provider = new CommitKitProvider(context.extensionUri);
+  gitService = new GitService();
 
   context.subscriptions.push(
+    gitService,
     vscode.commands.registerCommand('commitkit.openCommitModal', () => {
-      provider.openCommitModal();
-    })
-  );
-
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider(
-      'commitkit.webview',
-      provider,
-      {
-        webviewOptions: {
-          retainContextWhenHidden: true
-        }
+      if (!gitService) {
+        gitService = new GitService();
+        context.subscriptions.push(gitService);
       }
-    )
+
+      CommitKitPanel.createOrShow(context.extensionUri, gitService);
+    })
   );
 }
 
 export function deactivate(): void {
-  // Cleanup if needed
-} 
+  gitService?.dispose();
+  gitService = undefined;
+}

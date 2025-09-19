@@ -30,19 +30,10 @@
     "commands": [
       {
         "command": "commitkit.openCommitModal",
-        "title": "Open Commit Modal",
+        "title": "Open Commit Window",
         "category": "CommitKit"
       }
     ],
-    "views": {
-      "explorer": [
-        {
-          "id": "commitkit.webview",
-          "name": "CommitKit",
-          "when": "gitOpenRepositoryCount != 0"
-        }
-      ]
-    },
     "menus": {
       "commandPalette": [
         {
@@ -73,7 +64,8 @@
     "test:watch": "jest --watch",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc -p tsconfig.extension.json --noEmit && tsc -p tsconfig.webview.json --noEmit",
+    "verify": "npm run build && npm test"
   },
   "devDependencies": {
     "@types/jest": "^29.5.8",
@@ -89,10 +81,12 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
-    "vsce": "^2.15.0"
+    "vsce": "^2.15.0",
+    "@types/react": "^18.2.63",
+    "@types/react-dom": "^18.2.19"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
-} 
+}
