@@ -1,80 +1,67 @@
 # CommitKit
 
-A VSCode extension that replicates the Git commit modal from JetBrains IDEs (like PyCharm).
+A VSCode extension that replicates the PyCharm/JetBrains-style commit window.
 
 ## Features
 
-- Modern React-based webview interface
-- Real-time Git status monitoring
-- Staged/unstaged file management
-- Commit message editor with amend support
+- React webview with PyCharm-like commit UI
+- Staged / Unstaged / Untracked sections
+- Per-file Stage / Unstage actions
+- Stage All / Unstage All toolbar
+- Commit message with Amend option
+- Open file from the list
+- Refresh status and success/error feedback
 - VSCode theme integration
-- Fast development with Vite
 
-## Development
+## Getting Started
 
 ### Prerequisites
-
 - Node.js 18+
-- npm or yarn
-- VSCode
+- npm
+- VSCode 1.85+
 
-### Setup
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Build the extension:
-   ```bash
-   npm run build
-   ```
-
-4. Open the project in VSCode and press F5 to run the extension
-
-### Development Scripts
-
-- `npm run build` - Build both extension and webview
-- `npm run watch` - Watch mode for development
-- `npm run test` - Run tests
-- `npm run lint` - Lint code
-- `npm run package` - Package extension for distribution
-
-### Project Structure
-
+### Install dependencies
+```bash
+npm install
 ```
-src/
-├── extension/          # Extension backend (TypeScript)
-│   ├── extension.ts   # Main entry point
-│   ├── CommitKitProvider.ts
-│   └── GitService.ts
-└── webview/           # React webview (TypeScript + React)
-    ├── index.html
-    ├── main.tsx
-    ├── App.tsx
-    ├── style.css
-    └── components/
-        └── CommitModal.tsx
+
+### Build
+```bash
+npm run build
 ```
+This compiles the extension code and bundles the webview to `webview-dist/`.
+
+### Run & Debug in VSCode
+1. Open this folder in VSCode.
+2. Press F5 to launch an Extension Development Host.
+3. In the Dev Host, open a workspace with a Git repository.
+4. Open Command Palette and run: `CommitKit: Open Commit Modal`.
+5. Or open the SCM view; you’ll see a `CommitKit` view.
+
+### Test
+```bash
+npm test
+```
+- Unit tests run with Jest and `ts-jest`.
+- The `vscode` API is mocked under `src/__mocks__/vscode.ts`.
 
 ## Usage
+1. Open a Git repo in the Dev Host.
+2. Use `CommitKit: Open Commit Modal`.
+3. Stage/Unstage files individually or via Stage All/Unstage All.
+4. Type a commit message, optionally enable Amend, then Commit.
+5. Click filenames to open them in the editor.
 
-1. Open a Git repository in VSCode
-2. Use the command palette: `CommitKit: Open Commit Modal`
-3. Or click the CommitKit button in the SCM view
-4. Write your commit message and click Commit
-
-## Building for Distribution
-
+## Packaging
 ```bash
 npm run build
 npm run package
 ```
+This creates a `.vsix` you can install via VSCode’s Extensions panel.
 
-This creates a `.vsix` file that can be installed in VSCode.
+## Troubleshooting
+- If Git isn’t detected, ensure the built-in `vscode.git` extension is enabled and you opened a folder with a Git repo.
+- For webview changes, run `npm run watch` during development to hot-rebuild the web assets.
 
 ## License
-
 MIT
